@@ -6,6 +6,8 @@ public class AVLTree {
     public Node root;
     private int numOfNodes;
 
+
+
     private AVLTree(){root = null;numOfNodes=0;}
 
     public static final AVLTree getInstance(){return mInst;}
@@ -127,7 +129,7 @@ public class AVLTree {
 
     }
 
-    Node delete(Node node,int key)
+    void delete(Node node,int key)
     {
         if(root == null)
         {
@@ -198,7 +200,7 @@ public class AVLTree {
         //print left node
         inOrderTraversal(node.leftNode);
         //print right node
-        inOrderTraversal(node.rightNode);
+        inOrderTraversal(node.rightNode)                                  ;
     }
 
     public void postOrderTraversal(Node node)
@@ -215,7 +217,49 @@ public class AVLTree {
         System.out.println(" " + node.value + " ");
     }
     //delete method
+    private Node getLeftMostNode(Node node)
+    {
+        if(node == null)
+            return node;
+        Node leftMostNode = getLeftMostNode(node.leftNode);
+        return leftMostNode;
+    }
+    public String computeMaxPath(Node node,String s)
+    {
+        if(node == null)
+            return s;
+        Node left = node.leftNode;
+        Node right = node.rightNode;
+        s = computeMaxPath(node.leftNode,s);
+        s = computeMaxPath(node.rightNode,s);
+        //s = node.value;
 
+        if(left != null && right != null) {
+            if (left.value > right.value) {
+                s = s + left.value;
+            } else if (right.value > left.value){
+                s = s + right.value;
+            }
+        }
+        else if(left != null)
+        {
+            s = s + left.value;
+        }
+        else if(right != null)
+        {
+            s = s + right.value;
+        }
+
+        return s;
+    }
+    public void ToDLL()
+    {
+        //left most node will be the head
+        //in the in-order traversal left, root, right,
+        //left node will become the prev, right node will be next for the root node
+        ;
+
+    }
     //get method
     public static void main(String[] args)
     {
@@ -239,6 +283,11 @@ public class AVLTree {
 
         System.out.println("Printing the tree using postorder traversal...");
         myTree.postOrderTraversal(myTree.getRoot());
+
+        System.out.println("Trying to get max sum path ");
+        String s = " ";
+        s = myTree.computeMaxPath(myTree.root,s);
+        System.out.println(s);
 
     }
 }
